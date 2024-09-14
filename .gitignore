@@ -1,0 +1,109 @@
+# ======os======
+#.*
+._*
+*.DS_Store
+Thumbs.db
+
+# ======temp files======
+*~
+~$*.xls*
+~$*.doc*
+*.swp
+*.bak
+
+# ======git======
+!.gitignore
+!.gitattributes
+!.gitkeep
+!.gitkeeper
+
+# ======apache======
+!.htaccess
+
+# ======logs======
+logs/
+log/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ============================== IDEs ==============================
+
+# ======eclipse======
+#!.project
+!.cproject
+
+# ======hbuilder======
+.project
+
+# ======netbeans======
+nbproject/
+nbproject/private/
+
+# ======phpstorm======
+.idea/
+
+# ======visual studio======
+*.sln
+*.suo
+*.ncb
+*.opensdf
+*.filters
+*.njsproj
+*.ntvs*
+*.sdf
+*.vspscc
+*.user
+ipch/
+#Debug/
+#Release/
+
+# ======xcode======
+*.mode1v3
+xcuserdata/
+xcshareddata/
+
+# ======vscode======
+.vscode/
+!.vscode/extensions.json
+
+# ======obsidian======
+.obsidian
+
+# ============================== package manage ==============================
+
+# ======nodejs======
+node_modules
+dist/
+dist-ssr/
+coverage/
+*.local
+
+# ======composer======
+# /vendor
+
+# ============================== frameworks ==============================
+
+# ======laravel======
+# .env
+!.env.example
+
+# ======vue-webpack======
+test/unit/coverage
+test/e2e/reports
+selenium-debug.log
+
+# ======vue-vite======
+/cypress/videos/
+/cypress/screenshots/
+*.tsbuildinfo
+
+# ======uni-app======
+/.hhbuilderx/
+/unpackage/
+
+# ============================== my project ==============================
+

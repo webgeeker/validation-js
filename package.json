@@ -1,0 +1,22 @@
+{
+  "name": "validation-js",
+  "version": "1.0.0",
+  "description": "A powerful Javascript parameter validator",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webgeeker/validation-js.git"
+  },
+  "author": "webgeeker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/webgeeker/validation-js/issues"
+  },
+  "homepage": "https://github.com/webgeeker/validation-js#readme",
+  "devDependencies": {
+    "vitest": "^2.1.1"
+  }
+}
