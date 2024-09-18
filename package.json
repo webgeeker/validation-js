@@ -1,5 +1,5 @@
 {
-  "name": "@webgeeker/validation-js",
+  "name": "webgeeker-validation-js",
   "version": "1.0.0",
   "description": "A powerful Javascript parameter validator",
   "main": "src/index.js",
