@@ -790,7 +790,7 @@ export default class Validation {
   /**
    * 设置当前语言
    * 会自动动态异步加载内置的语言包
-   * @param lang 语言代码，如: zh_CN, en_US等等
+   * @param lang {string} 语言代码，如: zh_CN, en_US等等
    */
   static setLang(lang) {
     if (lang === Validation.#lang)
@@ -831,9 +831,9 @@ export default class Validation {
 
   /**
    * 设置特定语言的翻译表
-   * 如果是调用的Validation类的子类的对象的setTranslations()方法，翻译表会保存在子类的静态属性 _langToTranslations 中
-   * 翻译表中的项可以覆盖内置翻译表中的同名项
+   * 如果是调用的Validation类的子类的setTranslations()方法，翻译表会保存在子类的静态属性 _langToTranslations 中
    * 子类的翻译表中的项可以覆盖父类的翻译表中的同名项
+   * Validation类的翻译表中的项可以覆盖内置翻译表中的同名项
    * @param lang 语言代码
    * @param translations 翻译表
    */
