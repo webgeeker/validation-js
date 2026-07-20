@@ -852,10 +852,11 @@ export default class Validation {
    * 优先在当前类的翻译表中查找，找不到就沿着继承链到superclass中查找，再找不到就到 Validation 中的内置翻译表中查找
    * @param lang 语言代码
    * @param text 要翻译的文本
+   * @param isValidatorName 是否是验证器名称
    * @returns {string|undefined} 返回翻译后的文本；如果找不到，返回 undefined
    * @private 因为子类要间接调用此方法，所以不能真的设置为私有方法，只能打上 @private 标记
    */
-  static __findInTranslationsByLang(lang, text) {
+  static __findInTranslationsByLang(lang, text, isValidatorName) {
     let cls = this;
     do { // 沿着继承链向上查找
       if (cls.hasOwnProperty('_langToTranslations')) {
@@ -869,6 +870,9 @@ export default class Validation {
       if (cls === Validation)
         break;
     } while (cls = Object.getPrototypeOf(cls));
+
+    if (!isValidatorName) // 不是验证器名称，则不查内置表
+      return text;
 
     // 从内置翻译表中查找
     let translations = Validation.#langToBuiltinTranslations[lang];
@@ -886,13 +890,14 @@ export default class Validation {
    * 优先在当前类的翻译表中查找，找不到就沿着继承链到superclass中查找，再找不到就到 Validation 中的内置翻译表中查找
    * 如果无法翻译为当前语言（由setLang()方法设置），则尝试翻译为默认语言（由setDefaultLang()方法设置）
    * @param text 待翻译的文本
+   * @param isValidatorName 是否是验证器名称
    * @returns {string|undefined} 返回翻译后的文本；如果在当前语言和默认语言的翻译表中都找不到待翻译的文本，则返回 undefined
    * @private 因为子类要间接调用此方法，所以不能真的设置为私有方法，只能打上 @private 标记
    */
-  static __findInTranslations(text) {
-    let newText = this.__findInTranslationsByLang(Validation.#lang, text);
+  static __findInTranslations(text, isValidatorName) {
+    let newText = this.__findInTranslationsByLang(Validation.#lang, text, isValidatorName);
     if (newText === undefined && Validation.#lang !== Validation.#defaultLang)
-      return this.__findInTranslationsByLang(Validation.#defaultLang, text);
+      return this.__findInTranslationsByLang(Validation.#defaultLang, text, isValidatorName);
     return newText;
   }
 
@@ -903,7 +908,7 @@ export default class Validation {
    * @private 因为子类要间接调用此方法，所以不能真的设置为私有方法，只能打上 @private 标记
    */
   static __translateText(text) {
-    let translated = this.__findInTranslations(text);
+    let translated = this.__findInTranslations(text, false);
     if (translated === undefined)
       return text;
     return translated;
@@ -1110,7 +1115,7 @@ export default class Validation {
    * @protected
    */
   static _throwWithErrorTemplate(validatorName, ...replaces) {
-    let errorStr = this.__findInTranslations(validatorName);
+    let errorStr = this.__findInTranslations(validatorName, true);
     if (errorStr === undefined)
       throw new ValidationException(`验证器 ${validatorName} 验证失败，并且该验证器没有错误提示信息模版`);
     for (let i = 0; i < replaces.length; i += 2) {
