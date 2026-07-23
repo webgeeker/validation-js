@@ -1,4 +1,6 @@
 export default {
+  _OutOfIntRange_: "{{param}} is out of the INT range.", // 只有Int类型会显示这个错误提示，Long和Float不会显示，因为正常很难遇到输入超大的数字的情况，提示不准确问题不大
+
   // 整型（不提供length检测,因为负数的符号位会让人混乱, 可以用大于小于比较来做到这一点）
   Int: "{{param}} must be an integer",
   IntEq: "{{param}} must be equal to {{value}}",

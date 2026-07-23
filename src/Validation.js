@@ -1603,7 +1603,7 @@ export default class Validation {
           }
           if (Number.isInteger(v)) {
             if (v > 2147483647 || v < -2147483648)
-              this._throwValidatorException('IntGeLe', alias, reason, '{{min}}', -2147483648, '{{max}}', 2147483647);
+              this._throwValidatorException('_OutOfIntRange_', alias, reason);
             return v;
           }
         }
@@ -1611,7 +1611,7 @@ export default class Validation {
     } else if (type === 'number') {
       if (Number.isInteger(value)) {
         if (value > 2147483647 || value < -2147483648)
-          this._throwValidatorException('IntGeLe', alias, reason, '{{min}}', -2147483648, '{{max}}', 2147483647);
+          this._throwValidatorException('_OutOfIntRange_', alias, reason);
         return value;
       }
     }
@@ -1619,75 +1619,75 @@ export default class Validation {
   }
 
   static validateInt(value, reason, alias) {
-    Validation.#parseIntOrThrow(value);
+    Validation.#parseIntOrThrow(value, reason, alias);
     return value;
   }
 
   static validateIntEq(value, equalVal, reason, alias) {
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     if (val === equalVal)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('IntEq', alias, reason, '{{value}}', equalVal);
   }
 
   static validateIntNe(value, notEqualVal, reason, alias) {
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     if (val !== notEqualVal)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('IntNe', alias, reason, '{{value}}', notEqualVal);
   }
 
   static validateIntGt(value, min, reason, alias) {
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     if (val > min)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('IntGt', alias, reason, '{{min}}', min);
   }
 
   static validateIntGe(value, min, reason, alias) {
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     if (val >= min)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('IntGe', alias, reason, '{{min}}', min);
   }
 
   static validateIntLt(value, max, reason, alias) {
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     if (val < max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('IntLt', alias, reason, '{{max}}', max);
   }
 
   static validateIntLe(value, max, reason, alias) {
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     if (val <= max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('IntLe', alias, reason, '{{max}}', max);
   }
 
   static validateIntGtLt(value, min, max, reason, alias) {
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     if (val > min && val < max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('IntGtLt', alias, reason, '{{min}}', min, '{{max}}', max);
   }
 
   static validateIntGeLe(value, min, max, reason, alias) {
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     if (val >= min && val <= max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('IntGeLe', alias, reason, '{{min}}', min, '{{max}}', max);
   }
 
   static validateIntGtLe(value, min, max, reason, alias) {
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     if (val > min && val <= max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('IntGtLe', alias, reason, '{{min}}', min, '{{max}}', max);
   }
 
   static validateIntGeLt(value, min, max, reason, alias) {
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     if (val >= min && val < max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('IntGeLt', alias, reason, '{{min}}', min, '{{max}}', max);
@@ -1697,7 +1697,7 @@ export default class Validation {
     if (!inValues || inValues.length === 0)
       throw new ValidationException("必须提供可取值的列表");
 
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     for (const v of inValues) {
       if (v === val)
         return value; // 注意这里返回的是原始的value
@@ -1709,7 +1709,7 @@ export default class Validation {
     if (!notInValues || notInValues.length === 0)
       throw new ValidationException("必须提供不可取值的列表");
 
-    let val = Validation.#parseIntOrThrow(value);
+    let val = Validation.#parseIntOrThrow(value, reason, alias);
     let inList = false;
     for (const v of notInValues) {
       if (v === val) {
@@ -1764,75 +1764,75 @@ export default class Validation {
   }
 
   static validateLong(value, reason, alias) {
-    Validation.#parseLongOrThrow(value);
+    Validation.#parseLongOrThrow(value, reason, alias);
     return value;
   }
 
   static validateLongEq(value, equalVal, reason, alias) {
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     if (val === equalVal)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('LongEq', alias, reason, '{{value}}', equalVal);
   }
 
   static validateLongNe(value, notEqualVal, reason, alias) {
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     if (val !== notEqualVal)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('LongNe', alias, reason, '{{value}}', notEqualVal);
   }
 
   static validateLongGt(value, min, reason, alias) {
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     if (val > min)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('LongGt', alias, reason, '{{min}}', min);
   }
 
   static validateLongGe(value, min, reason, alias) {
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     if (val >= min)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('LongGe', alias, reason, '{{min}}', min);
   }
 
   static validateLongLt(value, max, reason, alias) {
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     if (val < max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('LongLt', alias, reason, '{{max}}', max);
   }
 
   static validateLongLe(value, max, reason, alias) {
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     if (val <= max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('LongLe', alias, reason, '{{max}}', max);
   }
 
   static validateLongGtLt(value, min, max, reason, alias) {
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     if (val > min && val < max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('LongGtLt', alias, reason, '{{min}}', min, '{{max}}', max);
   }
 
   static validateLongGeLe(value, min, max, reason, alias) {
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     if (val >= min && val <= max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('LongGeLe', alias, reason, '{{min}}', min, '{{max}}', max);
   }
 
   static validateLongGtLe(value, min, max, reason, alias) {
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     if (val > min && val <= max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('LongGtLe', alias, reason, '{{min}}', min, '{{max}}', max);
   }
 
   static validateLongGeLt(value, min, max, reason, alias) {
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     if (val >= min && val < max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('LongGeLt', alias, reason, '{{min}}', min, '{{max}}', max);
@@ -1842,7 +1842,7 @@ export default class Validation {
     if (!inValues || inValues.length === 0)
       throw new ValidationException("必须提供可取值的列表");
 
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     for (const v of inValues) {
       if (v === val)
         return value; // 注意这里返回的是原始的value
@@ -1854,7 +1854,7 @@ export default class Validation {
     if (!notInValues || notInValues.length === 0)
       throw new ValidationException("必须提供不可取值的列表");
 
-    let val = Validation.#parseLongOrThrow(value);
+    let val = Validation.#parseLongOrThrow(value, reason, alias);
     let inList = false;
     for (const v of notInValues) {
       if (v === val) {
@@ -1918,61 +1918,61 @@ export default class Validation {
   }
 
   static validateFloat(value, reason, alias) {
-    Validation.#parseFloatOrThrow(value);
+    Validation.#parseFloatOrThrow(value, reason, alias);
     return value;
   }
 
   static validateFloatGt(value, min, reason, alias) {
-    let val = Validation.#parseFloatOrThrow(value);
+    let val = Validation.#parseFloatOrThrow(value, reason, alias);
     if (val > min)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('FloatGt', alias, reason, '{{min}}', this.#floatToString(min));
   }
 
   static validateFloatGe(value, min, reason, alias) {
-    let val = Validation.#parseFloatOrThrow(value);
+    let val = Validation.#parseFloatOrThrow(value, reason, alias);
     if (val >= min)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('FloatGe', alias, reason, '{{min}}', this.#floatToString(min));
   }
 
   static validateFloatLt(value, max, reason, alias) {
-    let val = Validation.#parseFloatOrThrow(value);
+    let val = Validation.#parseFloatOrThrow(value, reason, alias);
     if (val < max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('FloatLt', alias, reason, '{{max}}', this.#floatToString(max));
   }
 
   static validateFloatLe(value, max, reason, alias) {
-    let val = Validation.#parseFloatOrThrow(value);
+    let val = Validation.#parseFloatOrThrow(value, reason, alias);
     if (val <= max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('FloatLe', alias, reason, '{{max}}', this.#floatToString(max));
   }
 
   static validateFloatGtLt(value, min, max, reason, alias) {
-    let val = Validation.#parseFloatOrThrow(value);
+    let val = Validation.#parseFloatOrThrow(value, reason, alias);
     if (val > min && val < max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('FloatGtLt', alias, reason, '{{min}}', this.#floatToString(min), '{{max}}', this.#floatToString(max));
   }
 
   static validateFloatGeLe(value, min, max, reason, alias) {
-    let val = Validation.#parseFloatOrThrow(value);
+    let val = Validation.#parseFloatOrThrow(value, reason, alias);
     if (val >= min && val <= max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('FloatGeLe', alias, reason, '{{min}}', this.#floatToString(min), '{{max}}', this.#floatToString(max));
   }
 
   static validateFloatGtLe(value, min, max, reason, alias) {
-    let val = Validation.#parseFloatOrThrow(value);
+    let val = Validation.#parseFloatOrThrow(value, reason, alias);
     if (val > min && val <= max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('FloatGtLe', alias, reason, '{{min}}', this.#floatToString(min), '{{max}}', this.#floatToString(max));
   }
 
   static validateFloatGeLt(value, min, max, reason, alias) {
-    let val = Validation.#parseFloatOrThrow(value);
+    let val = Validation.#parseFloatOrThrow(value, reason, alias);
     if (val >= min && val < max)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('FloatGeLt', alias, reason, '{{min}}', this.#floatToString(min), '{{max}}', this.#floatToString(max));
