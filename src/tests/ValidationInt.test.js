@@ -13,8 +13,8 @@ test('Int/Int', () => {
   expect(Validation.validateValue(1, 'Int', 'Parameter')).toBe(1);
   expect(Validation.validateValue(2147483647, 'Int', 'Parameter')).toBe(2147483647);
   expect(Validation.validateValue(-2147483648, 'Int', 'Parameter')).toBe(-2147483648);
-  expect(() => Validation.validateValue(2147483648, 'Int', 'Param')).toThrow('必须大于等于 -2147483648 小于等于 2147483647');
-  expect(() => Validation.validateValue(-2147483649, 'Int', 'Param')).toThrow('必须大于等于 -2147483648 小于等于 2147483647');
+  expect(() => Validation.validateValue(2147483648, 'Int', 'Param')).toThrow('超出了INT范围');
+  expect(() => Validation.validateValue(-2147483649, 'Int', 'Param')).toThrow('超出了INT范围');
   expect(() => Validation.validateValue(true, 'Int', 'Param')).toThrow('必须是整数');
   expect(() => Validation.validateValue([], 'Int', 'Param')).toThrow('必须是整数');
   expect(() => Validation.validateValue({}, 'Int', 'Param')).toThrow('必须是整数');

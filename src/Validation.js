@@ -591,7 +591,7 @@ export default class Validation {
             case 'IfStrLe': {
               if (units.length > countOfIfs)
                 throw new ValidationException("条件验证器 IfXxx 只能出现在验证规则的开头");
-              let params = Validation.#parseIfXxxWith1Param1Str(p, validatorName);
+              let params = Validation.#parseIfXxxWith1Param1Str(p);
               if (!params)
                 Validation.#throwFormatError(validatorName);
               validatorUnit = [validatorName, params[0], params[1]];
@@ -602,7 +602,7 @@ export default class Validation {
             case 'IfStrNotIn': {
               if (units.length > countOfIfs)
                 throw new ValidationException("条件验证器 IfXxx 只能出现在验证规则的开头");
-              let params = Validation.#parseIfXxxWith1ParamNStrs(p, validatorName);
+              let params = Validation.#parseIfXxxWith1ParamNStrs(p);
               if (!params)
                 Validation.#throwFormatError(validatorName);
               validatorUnit = [validatorName, params[0], params[1]];
@@ -1354,7 +1354,6 @@ export default class Validation {
   /**
    * 解析 IfStrXx:varname,abc 中的冒号后面的部分（1个条件参数后面带1个String值）
    * @param string 待解析的字符串, 如: "sex,male"
-   * @param validatorName 验证器名称 "IfStrXx"
    * @return 出错返回null, 否则返回 ["varname", "abc"]
    */
   static #parseIfXxxWith1Param1Str(
@@ -1423,7 +1422,6 @@ export default class Validation {
   /**
    * 解析 IfStrXxx:varname,a,b,abc 中的冒号后面的部分（1个条件参数后面带多个字符串）
    * @param string 待解析的字符串, 如: "state,pending,started"
-   * @param validatorName 验证器名称 "IfStrXxx"
    * @return 出错返回null, 否则返回 ["varname", ["a","b","abc"]]
    */
   static #parseIfXxxWith1ParamNStrs(
@@ -1518,7 +1516,7 @@ export default class Validation {
     this._throwTypeException('Bool', alias, reason);
   }
 
-  static #parseBoolSmart(value, reason, alias) {
+  static #parseBoolSmart(value) {
     let type = typeof value;
     if (type === 'string') {
       let v = value.toLowerCase();
@@ -1540,19 +1538,19 @@ export default class Validation {
   }
 
   static validateBool(value, reason, alias) {
-    Validation.#parseBoolOrThrow(value);
+    Validation.#parseBoolOrThrow(value, reason, alias);
     return value;
   }
 
   static validateBoolTrue(value, reason, alias) {
-    let val = Validation.#parseBoolOrThrow(value);
+    let val = Validation.#parseBoolOrThrow(value, reason, alias);
     if (val)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('BoolTrue', alias, reason);
   }
 
   static validateBoolFalse(value, reason, alias) {
-    let val = Validation.#parseBoolOrThrow(value);
+    let val = Validation.#parseBoolOrThrow(value, reason, alias);
     if (!val)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('BoolFalse', alias, reason);
@@ -2227,7 +2225,7 @@ export default class Validation {
 
   static validateUrl(value, reason, alias) {
     if (typeof value === 'string') {
-      if (/^[a-zA-z]{1,100}:\/\/[^\s]+$/.test(value))
+      if (/^[a-zA-Z]{1,100}:\/\/\S+$/.test(value))
         return value;
       this._throwValidatorException('Url', alias, reason);
     }
@@ -2236,7 +2234,7 @@ export default class Validation {
 
   static validateHttpUrl(value, reason, alias) {
     if (typeof value === 'string') {
-      if (/^[hH][tT][tT][pP][sS]?:\/\/[^\s]+$/.test(value))
+      if (/^[hH][tT][tT][pP][sS]?:\/\/\S+$/.test(value))
         return value;
       this._throwValidatorException('HttpUrl', alias, reason);
     }
@@ -2428,21 +2426,21 @@ export default class Validation {
   }
 
   static validateDateFrom(value, from, reason, alias) {
-    let val = Validation.#parseDateOrThrow(value);
+    let val = Validation.#parseDateOrThrow(value, reason, alias);
     if (val >= from)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('DateFrom', alias, reason, '{{from}}', Validation.#formatDate(from));
   }
 
   static validateDateTo(value, to, reason, alias) {
-    let val = Validation.#parseDateOrThrow(value);
+    let val = Validation.#parseDateOrThrow(value, reason, alias);
     if (val <= to)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('DateTo', alias, reason, '{{to}}', Validation.#formatDate(to));
   }
 
   static validateDateFromTo(value, from, to, reason, alias) {
-    let val = Validation.#parseDateOrThrow(value);
+    let val = Validation.#parseDateOrThrow(value, reason, alias);
     if (val >= from && val <= to)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('DateFromTo', alias, reason, '{{from}}', Validation.#formatDate(from), '{{to}}', Validation.#formatDate(to));
@@ -2454,21 +2452,21 @@ export default class Validation {
   }
 
   static validateDateTimeFrom(value, from, reason, alias) {
-    let val = Validation.#parseDateTimeOrThrow(value);
+    let val = Validation.#parseDateTimeOrThrow(value, reason, alias);
     if (val >= from)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('DateTimeFrom', alias, reason, '{{from}}', Validation.#formatDateTime(from));
   }
 
   static validateDateTimeTo(value, to, reason, alias) {
-    let val = Validation.#parseDateTimeOrThrow(value);
+    let val = Validation.#parseDateTimeOrThrow(value, reason, alias);
     if (val < to)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('DateTimeTo', alias, reason, '{{to}}', Validation.#formatDateTime(to));
   }
 
   static validateDateTimeFromTo(value, from, to, reason, alias) {
-    let val = Validation.#parseDateTimeOrThrow(value);
+    let val = Validation.#parseDateTimeOrThrow(value, reason, alias);
     if (val >= from && val < to)
       return value; // 注意这里返回的是原始的value
     this._throwValidatorException('DateTimeFromTo', alias, reason, '{{from}}', Validation.#formatDateTime(from), '{{to}}', Validation.#formatDateTime(to));
